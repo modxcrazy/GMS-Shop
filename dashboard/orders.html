@@ -920,7 +920,7 @@
                     totalOrdersEl.textContent = totalOrders;
                     pendingOrdersEl.textContent = pendingOrders;
                     completedOrdersEl.textContent = completedOrders;
-                    totalRevenueEl.textContent = `$${totalRevenue.toFixed(2)}`;
+                    totalRevenueEl.textContent = `₹${totalRevenue.toFixed(2)}`;
 
                     // Render orders table
                     renderOrdersTable();
@@ -1051,8 +1051,8 @@
             }
 
             // Set order totals
-            orderSubtotalEl.textContent = `$${order.subtotal?.toFixed(2) || '0.00'}`;
-            orderShippingEl.textContent = `$${order.shippingCost?.toFixed(2) || '0.00'}`;
+            orderSubtotalEl.textContent = `₹${order.subtotal?.toFixed(2) || '0.00'}`;
+            orderShippingEl.textContent = `₹${order.shippingCost?.toFixed(2) || '0.00'}`;
             orderTaxEl.textContent = `$${order.tax?.toFixed(2) || '0.00'}`;
             orderTotalEl.innerHTML = `<strong>$${order.total?.toFixed(2) || '0.00'}</strong>`;
 
