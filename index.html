@@ -5,8 +5,847 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Google - Mobile & Electronics Shop</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <script type="module" src="js/app.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <style>
+        :root {
+            --primary-color: #4285F4;
+            --secondary-color: #34A853;
+            --accent-color: #EA4335;
+            --yellow-color: #FBBC05;
+            --dark-color: #202124;
+            --light-color: #f8f9fa;
+            --gray-color: #5f6368;
+            --light-gray: #e8eaed;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #ffffff;
+            color: var(--dark-color);
+            padding-bottom: 70px; /* Space for bottom bar */
+        }
+
+        /* Header Styles */
+        header {
+            background-color: white;
+            padding: 15px 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo h1 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .logo p {
+            color: var(--gray-color);
+            font-size: 0.8rem;
+        }
+
+        .search-bar {
+            display: flex;
+            margin: 15px 0;
+            border: 1px solid var(--light-gray);
+            border-radius: 24px;
+            overflow: hidden;
+            padding: 5px 15px;
+            align-items: center;
+        }
+
+        .search-bar input {
+            flex: 1;
+            border: none;
+            padding: 10px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .search-bar button {
+            background: none;
+            border: none;
+            color: var(--gray-color);
+            cursor: pointer;
+        }
+
+        /* Navigation */
+        nav {
+            background-color: white;
+            padding: 10px 20px;
+            overflow-x: auto;
+            white-space: nowrap;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        nav ul {
+            display: inline-flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: var(--gray-color);
+            font-weight: 500;
+            text-decoration: none;
+            padding: 5px 0;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        nav ul li a:hover, nav ul li a.active {
+            color: var(--primary-color);
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        nav ul li a:hover::after, nav ul li a.active::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('images/hero-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .hero-content {
+            max-width: 500px;
+        }
+
+        .hero h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        .shop-now {
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 24px;
+            font-weight: 500;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .shop-now:hover {
+            background-color: #3367d6;
+            transform: translateY(-2px);
+        }
+
+        /* Categories Section */
+        .categories {
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .categories h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--dark-color);
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .category-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-card img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+        }
+
+        .category-card h3 {
+            padding: 12px;
+            font-size: 1rem;
+            text-align: center;
+            color: var(--dark-color);
+        }
+
+        /* Products Section */
+        .products, .deals {
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .products h2, .deals h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--dark-color);
+        }
+
+        .product-grid, .deal-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .product-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-image {
+            height: 150px;
+            overflow: hidden;
+            position: relative;
+            background-color: #f5f5f5;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.5s;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        .product-info {
+            padding: 12px;
+        }
+
+        .product-title {
+            font-size: 0.95rem;
+            margin-bottom: 5px;
+            color: var(--dark-color);
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .product-brand {
+            font-size: 0.8rem;
+            color: var(--gray-color);
+            margin-bottom: 8px;
+        }
+
+        .product-price {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .current-price {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .original-price {
+            font-size: 0.8rem;
+            color: var(--gray-color);
+            text-decoration: line-through;
+        }
+
+        .discount {
+            font-size: 0.7rem;
+            background-color: var(--yellow-color);
+            color: var(--dark-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .add-to-cart, .view-details {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 0.8rem;
+            transition: var(--transition);
+            flex: 1;
+            text-align: center;
+        }
+
+        .add-to-cart {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .add-to-cart:hover {
+            background-color: #3367d6;
+        }
+
+        .view-details {
+            background-color: var(--light-gray);
+            color: var(--dark-color);
+        }
+
+        .view-details:hover {
+            background-color: #d1d1d1;
+        }
+
+        /* Deals Section */
+        .deal-grid .product-card {
+            border: 2px solid var(--accent-color);
+        }
+
+        /* Newsletter */
+        .newsletter {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 30px 20px;
+            margin-bottom: 30px;
+        }
+
+        .newsletter-content {
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .newsletter h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .newsletter p {
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .newsletter form {
+            display: flex;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .newsletter input {
+            flex: 1;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 24px 0 0 24px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .newsletter button {
+            padding: 0 20px;
+            background-color: var(--dark-color);
+            color: white;
+            border: none;
+            border-radius: 0 24px 24px 0;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .newsletter button:hover {
+            background-color: #000;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 30px 20px 20px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .footer-section h4 {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: white;
+        }
+
+        .footer-section p, .footer-section li {
+            color: #bdc1c6;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section li a {
+            color: #bdc1c6;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .footer-section li a:hover {
+            color: white;
+        }
+
+        .footer-section i {
+            margin-right: 8px;
+            width: 16px;
+            text-align: center;
+        }
+
+        .footer-bottom {
+            padding-top: 20px;
+            border-top: 1px solid #3c4043;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .footer-bottom p {
+            color: #9aa0a6;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-icons a {
+            color: white;
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .social-icons a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Bottom Navigation Bar */
+        .bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        .bottom-bar-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--gray-color);
+            font-size: 0.8rem;
+            transition: var(--transition);
+        }
+
+        .bottom-bar-item i {
+            font-size: 1.2rem;
+            margin-bottom: 3px;
+        }
+
+        .bottom-bar-item.active, .bottom-bar-item:hover {
+            color: var(--primary-color);
+        }
+
+        .bottom-bar-item .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--accent-color);
+            color: white;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            font-size: 0.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            overflow: auto;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+            animation: modalopen 0.3s;
+        }
+
+        @keyframes modalopen {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray-color);
+            transition: var(--transition);
+        }
+
+        .close-btn:hover {
+            color: var(--dark-color);
+        }
+
+        .modal h2 {
+            margin-bottom: 20px;
+            color: var(--dark-color);
+            text-align: center;
+        }
+
+        .modal form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .modal input {
+            padding: 12px 15px;
+            border: 1px solid var(--light-gray);
+            border-radius: 6px;
+            font-size: 1rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .modal input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+        }
+
+        .modal button {
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .modal button:hover {
+            background-color: #3367d6;
+        }
+
+        .modal p {
+            text-align: center;
+            margin-top: 15px;
+            color: var(--gray-color);
+        }
+
+        .modal p a {
+            color: var(--primary-color);
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        /* Product Detail Modal */
+        .product-detail {
+            max-width: 500px;
+        }
+
+        .product-detail-content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-detail-image {
+            width: 100%;
+            height: 200px;
+            background-color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            border-radius: 8px;
+        }
+
+        .product-detail-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .product-detail-title {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+            color: var(--dark-color);
+        }
+
+        .product-detail-brand {
+            font-size: 0.9rem;
+            color: var(--gray-color);
+            margin-bottom: 15px;
+        }
+
+        .product-detail-price {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .product-detail-description {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            font-size: 0.9rem;
+        }
+
+        .product-detail-specs {
+            margin-bottom: 20px;
+        }
+
+        .product-detail-specs h4 {
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+
+        .product-detail-specs ul {
+            list-style-position: inside;
+            color: var(--gray-color);
+            font-size: 0.9rem;
+        }
+
+        .product-detail-specs li {
+            margin-bottom: 5px;
+        }
+
+        .product-detail-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .product-detail-actions button {
+            flex: 1;
+            padding: 12px;
+            font-size: 0.9rem;
+        }
+
+        .buy-now {
+            background-color: var(--secondary-color);
+        }
+
+        .buy-now:hover {
+            background-color: #2d9246;
+        }
+
+        /* Search Results */
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 0 0 12px 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+            z-index: 99;
+        }
+
+        .search-result-item {
+            display: flex;
+            padding: 12px 15px;
+            align-items: center;
+            border-bottom: 1px solid var(--light-gray);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .search-result-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        .search-result-item img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            margin-right: 15px;
+            border-radius: 4px;
+        }
+
+        .search-result-item h4 {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            color: var(--dark-color);
+        }
+
+        .search-result-item p {
+            font-size: 0.9rem;
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .no-results {
+            padding: 15px;
+            text-align: center;
+            color: var(--gray-color);
+        }
+
+        /* User Dropdown */
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 20px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            width: 200px;
+            padding: 10px 0;
+            display: none;
+            z-index: 100;
+        }
+
+        .user-dropdown a {
+            display: block;
+            padding: 10px 15px;
+            color: var(--dark-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .user-dropdown a:hover {
+            background-color: #f5f5f5;
+            color: var(--primary-color);
+        }
+
+        .user-dropdown a i {
+            margin-right: 10px;
+            width: 18px;
+            text-align: center;
+        }
+
+        /* Responsive Styles */
+        @media (min-width: 768px) {
+            .category-grid, .product-grid, .deal-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .footer-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (min-width: 992px) {
+            .category-grid, .product-grid, .deal-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .product-detail-content {
+                flex-direction: row;
+            }
+
+            .product-detail-image {
+                width: 200px;
+                height: 200px;
+                margin-right: 20px;
+                margin-bottom: 0;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Header Section -->
@@ -31,7 +870,7 @@
     <!-- Navigation -->
     <nav>
         <ul>
-            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html" class="active">Home</a></li>
             <li><a href="#" data-category="smartphones">Smartphones</a></li>
             <li><a href="#" data-category="laptops">Laptops</a></li>
             <li><a href="#" data-category="tablets">Tablets</a></li>
@@ -78,7 +917,80 @@
     <section class="products">
         <h2>Featured Products</h2>
         <div class="product-grid" id="featured-products">
-            <!-- Products loaded from Firebase -->
+            <!-- Products will be loaded from Firebase -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://via.placeholder.com/300" alt="Product Image">
+                    <span class="product-badge">10% OFF</span>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Google Pixel 7 Pro</h3>
+                    <p class="product-brand">Google</p>
+                    <div class="product-price">
+                        <span class="current-price">$899</span>
+                        <span class="original-price">$999</span>
+                        <span class="discount">Save 10%</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="view-details">Details</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://via.placeholder.com/300" alt="Product Image">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Google Pixel Watch</h3>
+                    <p class="product-brand">Google</p>
+                    <div class="product-price">
+                        <span class="current-price">$349</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="view-details">Details</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://via.placeholder.com/300" alt="Product Image">
+                    <span class="product-badge">15% OFF</span>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Google Pixel Buds Pro</h3>
+                    <p class="product-brand">Google</p>
+                    <div class="product-price">
+                        <span class="current-price">$169</span>
+                        <span class="original-price">$199</span>
+                        <span class="discount">Save 15%</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="view-details">Details</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://via.placeholder.com/300" alt="Product Image">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Google Pixel Tablet</h3>
+                    <p class="product-brand">Google</p>
+                    <div class="product-price">
+                        <span class="current-price">$449</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="view-details">Details</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -86,7 +998,46 @@
     <section class="deals">
         <h2>Today's Deals</h2>
         <div class="deal-grid" id="deals-products">
-            <!-- Deal products loaded from Firebase -->
+            <!-- Deal products will be loaded from Firebase -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://via.placeholder.com/300" alt="Product Image">
+                    <span class="product-badge">20% OFF</span>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Google Pixel 6a</h3>
+                    <p class="product-brand">Google</p>
+                    <div class="product-price">
+                        <span class="current-price">$399</span>
+                        <span class="original-price">$499</span>
+                        <span class="discount">Save 20%</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="view-details">Details</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://via.placeholder.com/300" alt="Product Image">
+                    <span class="product-badge">25% OFF</span>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Google Nest Hub</h3>
+                    <p class="product-brand">Google</p>
+                    <div class="product-price">
+                        <span class="current-price">$75</span>
+                        <span class="original-price">$99</span>
+                        <span class="discount">Save 25%</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="view-details">Details</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -106,8 +1057,8 @@
     <footer>
         <div class="footer-grid">
             <div class="footer-section">
-                <h4>About Tech Haven</h4>
-                <p>Your one-stop shop for all electronics and mobile devices at competitive prices.</p>
+                <h4>About Google Mobile Shop</h4>
+                <p>Your one-stop shop for all Google electronics and mobile devices at competitive prices.</p>
             </div>
             <div class="footer-section">
                 <h4>Quick Links</h4>
@@ -129,13 +1080,13 @@
             </div>
             <div class="footer-section">
                 <h4>Contact Us</h4>
-                <p><i class="fas fa-map-marker-alt"></i> 123 Tech Street, Silicon Valley</p>
-                <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
-                <p><i class="fas fa-envelope"></i> info@techhaven.com</p>
+                <p><i class="fas fa-map-marker-alt"></i> 1600 Amphitheatre Parkway, Mountain View</p>
+                <p><i class="fas fa-phone"></i> +1 (650) 253-0000</p>
+                <p><i class="fas fa-envelope"></i> support@googlemobileshop.com</p>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2023 Tech Haven. All Rights Reserved.</p>
+            <p>&copy; 2023 Google Mobile Shop. All Rights Reserved.</p>
             <div class="social-icons">
                 <a href="#"><i class="fab fa-facebook"></i></a>
                 <a href="#"><i class="fab fa-twitter"></i></a>
@@ -144,6 +1095,31 @@
             </div>
         </div>
     </footer>
+
+    <!-- Bottom Navigation Bar -->
+    <div class="bottom-bar">
+        <a href="index.html" class="bottom-bar-item active">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="#" class="bottom-bar-item">
+            <i class="fas fa-search"></i>
+            <span>Search</span>
+        </a>
+        <a href="#" class="bottom-bar-item">
+            <i class="fas fa-heart"></i>
+            <span>Wishlist</span>
+        </a>
+        <a href="cart.html" class="bottom-bar-item">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Cart</span>
+            <span class="badge">3</span>
+        </a>
+        <a href="#" class="bottom-bar-item" id="profile-btn">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </div>
 
     <!-- Login Modal -->
     <div class="modal" id="login-modal">
@@ -180,15 +1156,273 @@
         <div class="modal-content product-detail">
             <span class="close-btn">&times;</span>
             <div class="product-detail-content" id="product-detail-content">
-                <!-- Product details loaded dynamically -->
+                <div class="product-detail-image">
+                    <img src="https://via.placeholder.com/300" alt="Product Image">
+                </div>
+                <div>
+                    <h3 class="product-detail-title">Google Pixel 7 Pro</h3>
+                    <p class="product-detail-brand">Brand: Google</p>
+                    <div class="product-detail-price">
+                        <span class="current-price">$899</span>
+                        <span class="original-price">$999</span>
+                        <span class="discount">10% OFF</span>
+                    </div>
+                    <div class="product-detail-description">
+                        <p>The Google Pixel 7 Pro is the ultimate Google phone with advanced camera system, powerful performance, and the best of Google built in.</p>
+                    </div>
+                    <div class="product-detail-specs">
+                        <h4>Specifications</h4>
+                        <ul>
+                            <li>6.7-inch QHD+ OLED display</li>
+                            <li>Google Tensor G2 processor</li>
+                            <li>12GB RAM, 256GB storage</li>
+                            <li>Triple rear camera system</li>
+                            <li>5000mAh battery</li>
+                        </ul>
+                    </div>
+                    <div class="product-detail-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="buy-now">Buy Now</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Search Results Dropdown -->
-    <div id="search-results" class="search-results"></div>
+    <div id="search-results" class="search-results">
+        <div class="search-result-item">
+            <img src="https://via.placeholder.com/300" alt="Product Image">
+            <div>
+                <h4>Google Pixel 7 Pro</h4>
+                <p>$899</p>
+            </div>
+        </div>
+        <div class="search-result-item">
+            <img src="https://via.placeholder.com/300" alt="Product Image">
+            <div>
+                <h4>Google Pixel Watch</h4>
+                <p>$349</p>
+            </div>
+        </div>
+        <div class="search-result-item">
+            <img src="https://via.placeholder.com/300" alt="Product Image">
+            <div>
+                <h4>Google Pixel Buds Pro</h4>
+                <p>$169</p>
+            </div>
+        </div>
+    </div>
 
     <!-- User Dropdown -->
-    <div id="user-dropdown" class="user-dropdown"></div>
+    <div id="user-dropdown" class="user-dropdown">
+        <a href="#"><i class="fas fa-user"></i> My Profile</a>
+        <a href="#"><i class="fas fa-box"></i> My Orders</a>
+        <a href="#"><i class="fas fa-heart"></i> Wishlist</a>
+        <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBgTfR8LW6XvZ7QsqoDskwd0LDKzwkDE3c",
+    authDomain: "bkeditor-696ed.firebaseapp.com",
+    databaseURL: "https://bkeditor-696ed-default-rtdb.firebaseio.com",
+    projectId: "bkeditor-696ed",
+    storageBucket: "bkeditor-696ed.appspot.com",
+    messagingSenderId: "101064331771",
+    appId: "1:101064331771:web:69016baa8c04651937bb5e",
+    measurementId: "G-1LXVDK7J3M"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        // DOM Elements
+        const loginBtn = document.getElementById('login-btn');
+        const registerBtn = document.getElementById('show-register');
+        const showLoginBtn = document.getElementById('show-login');
+        const loginModal = document.getElementById('login-modal');
+        const registerModal = document.getElementById('register-modal');
+        const productModal = document.getElementById('product-modal');
+        const closeBtns = document.querySelectorAll('.close-btn');
+        const featuredProductsGrid = document.getElementById('featured-products');
+        const dealsProductsGrid = document.getElementById('deals-products');
+        const cartCount = document.getElementById('cart-count');
+        const newsletterForm = document.getElementById('newsletter-form');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const searchInput = document.getElementById('search-input');
+        const searchBtn = document.getElementById('search-btn');
+        const searchResults = document.getElementById('search-results');
+        const userDropdown = document.getElementById('user-dropdown');
+        const profileBtn = document.getElementById('profile-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const viewDetailsBtns = document.querySelectorAll('.view-details');
+        const addToCartBtns = document.querySelectorAll('.add-to-cart');
+
+        // Sample cart count
+        let cartItems = 3;
+        cartCount.textContent = cartItems;
+
+        // Modal Event Listeners
+        loginBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginModal.style.display = 'block';
+        });
+
+        registerBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginModal.style.display = 'none';
+            registerModal.style.display = 'block';
+        });
+
+        showLoginBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            registerModal.style.display = 'none';
+            loginModal.style.display = 'block';
+        });
+
+        closeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                loginModal.style.display = 'none';
+                registerModal.style.display = 'none';
+                productModal.style.display = 'none';
+            });
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === loginModal) loginModal.style.display = 'none';
+            if (e.target === registerModal) registerModal.style.display = 'none';
+            if (e.target === productModal) productModal.style.display = 'none';
+            if (!e.target.closest('#search-results') && e.target !== searchInput && e.target !== searchBtn) {
+                searchResults.style.display = 'none';
+            }
+            if (!e.target.closest('#user-dropdown') && e.target !== profileBtn) {
+                userDropdown.style.display = 'none';
+            }
+        });
+
+        // Search functionality
+        searchBtn.addEventListener('click', () => {
+            if (searchInput.value.trim() !== '') {
+                searchResults.style.display = 'block';
+            }
+        });
+
+        searchInput.addEventListener('focus', () => {
+            if (searchInput.value.trim() !== '') {
+                searchResults.style.display = 'block';
+            }
+        });
+
+        // Profile dropdown
+        profileBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            userDropdown.style.display = userDropdown.style.display === 'block' ? 'none' : 'block';
+        });
+
+        // Logout functionality
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            // In a real app, you would sign out the user here
+            alert('You have been logged out');
+            userDropdown.style.display = 'none';
+        });
+
+        // View product details
+        viewDetailsBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                productModal.style.display = 'block';
+            });
+        });
+
+        // Add to cart functionality
+        addToCartBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                cartItems++;
+                cartCount.textContent = cartItems;
+                alert('Product added to cart!');
+            });
+        });
+
+        // Newsletter subscription
+        newsletterForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = newsletterForm.querySelector('input').value;
+            alert(`Thank you for subscribing with ${email}`);
+            newsletterForm.reset();
+        });
+
+        // Login form
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = loginForm.querySelector('input[type="email"]').value;
+            const password = loginForm.querySelector('input[type="password"]').value;
+            // In a real app, you would authenticate with Firebase here
+            alert(`Logged in as ${email}`);
+            loginModal.style.display = 'none';
+            loginForm.reset();
+        });
+
+        // Register form
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = registerForm.querySelector('input[type="text"]').value;
+            const email = registerForm.querySelector('input[type="email"]').value;
+            const password = registerForm.querySelector('input[type="password"]').value;
+            const confirmPassword = registerForm.querySelectorAll('input[type="password"]')[1].value;
+            
+            if (password !== confirmPassword) {
+                alert("Passwords don't match!");
+                return;
+            }
+            
+            // In a real app, you would create a user account here
+            alert(`Account created for ${name} (${email})`);
+            registerModal.style.display = 'none';
+            registerForm.reset();
+        });
+
+        // Load products from Firebase (sample implementation)
+        function loadProducts() {
+            // In a real app, you would fetch products from Firestore
+            console.log('Loading products from Firebase...');
+            
+            // Sample code for fetching products:
+            /*
+            db.collection('products').where('featured', '==', true).limit(8).get()
+                .then(querySnapshot => {
+                    featuredProductsGrid.innerHTML = '';
+                    querySnapshot.forEach(doc => {
+                        const product = doc.data();
+                        renderProduct(product, featuredProductsGrid);
+                    });
+                })
+                .catch(error => {
+                    console.error("Error loading featured products: ", error);
+                });
+
+            db.collection('products').where('onSale', '==', true).limit(4).get()
+                .then(querySnapshot => {
+                    dealsProductsGrid.innerHTML = '';
+                    querySnapshot.forEach(doc => {
+                        const product = doc.data();
+                        renderProduct(product, dealsProductsGrid, true);
+                    });
+                })
+                .catch(error => {
+                    console.error("Error loading deal products: ", error);
+                });
+            */
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProducts();
+        });
+    </script>
 </body>
 </html>
