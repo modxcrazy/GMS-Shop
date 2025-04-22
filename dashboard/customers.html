@@ -5,31 +5,527 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customers - Tech Haven Admin</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="../../css/fonts.css">
-    <link rel="stylesheet" href="../../css/admin.css">
-    <script type="module" src="../../js/admin.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #e6e9ff;
+            --primary-dark: #3a56d4;
+            --success: #4cc9a0;
+            --warning: #f8961e;
+            --danger: #ef233c;
+            --dark: #2b2d42;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --sidebar-width: 250px;
+            --topbar-height: 70px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f7fb;
+            color: var(--dark);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: white;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+            position: fixed;
+            height: 100vh;
+            transition: var(--transition);
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            height: var(--topbar-height);
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .sidebar-header h3 {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+
+        .menu-title {
+            padding: 10px 20px;
+            color: var(--gray);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: var(--dark);
+            text-decoration: none;
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+        }
+
+        .menu-item i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+            color: var(--gray);
+        }
+
+        .menu-item:hover {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .menu-item:hover i {
+            color: var(--primary);
+        }
+
+        .menu-item.active {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            border-left-color: var(--primary);
+        }
+
+        .menu-item.active i {
+            color: var(--primary);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            transition: var(--transition);
+        }
+
+        /* Topbar */
+        .header {
+            height: var(--topbar-height);
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 90;
+        }
+
+        .toggle-sidebar {
+            font-size: 1.2rem;
+            color: var(--gray);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .toggle-sidebar:hover {
+            color: var(--primary);
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-profile img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Content Area */
+        .content {
+            padding: 20px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .page-title h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .breadcrumb {
+            display: flex;
+            gap: 10px;
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-top: 5px;
+        }
+
+        .breadcrumb a {
+            color: var(--gray);
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--primary);
+        }
+
+        .breadcrumb .divider {
+            color: var(--light-gray);
+        }
+
+        /* Cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--light-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            color: white;
+        }
+
+        .card-icon.primary {
+            background-color: var(--primary);
+        }
+
+        .card-icon.success {
+            background-color: var(--success);
+        }
+
+        .card-icon.warning {
+            background-color: var(--warning);
+        }
+
+        .card-icon.danger {
+            background-color: var(--danger);
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .card-body h3 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th, .table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .table th {
+            font-weight: 500;
+            color: var(--gray);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .table tr:hover td {
+            background-color: var(--primary-light);
+        }
+
+        .action-btn {
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            background-color: transparent;
+        }
+
+        .action-btn.view {
+            color: var(--primary);
+        }
+
+        .action-btn.delete {
+            color: var(--danger);
+        }
+
+        .action-btn:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        .modal-body {
+            margin-bottom: 20px;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--light-gray);
+            color: var(--dark);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--light-gray);
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #d90429;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .sidebar {
+                left: -100%;
+            }
+            .sidebar.active {
+                left: 0;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .card-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+    </style>
 </head>
 <body class="admin-dashboard">
-    <!-- Sidebar (same as products.html) -->
+    <!-- Sidebar -->
     <aside class="sidebar">
-        <!-- ... same sidebar content as products.html ... -->
+        <div class="sidebar-header">
+            <h3>Tech Haven</h3>
+        </div>
+        <div class="sidebar-menu">
+            <div class="menu-title">Main</div>
+            <a href="dashboard.html" class="menu-item">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+            
+            <div class="menu-title">Management</div>
+            <a href="products.html" class="menu-item">
+                <i class="fas fa-shopping-bag"></i>
+                <span>Products</span>
+            </a>
+            <a href="categories.html" class="menu-item">
+                <i class="fas fa-list-alt"></i>
+                <span>Categories</span>
+            </a>
+            <a href="orders.html" class="menu-item">
+                <i class="fas fa-tags"></i>
+                <span>Orders</span>
+            </a>
+            <a href="customers.html" class="menu-item active">
+                <i class="fas fa-users"></i>
+                <span>Customers</span>
+            </a>
+            
+            <div class="menu-title">System</div>
+            <a href="settings.html" class="menu-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+            <a href="administrators.html" class="menu-item">
+                <i class="fas fa-user-shield"></i>
+                <span>Administrators</span>
+            </a>
+        </div>
     </aside>
     
     <!-- Main Content -->
     <main class="main-content">
-        <!-- Header (same as products.html) -->
+        <!-- Header -->
         <header class="header">
-            <!-- ... same header content as products.html ... -->
+            <div class="toggle-sidebar" id="toggle-sidebar">
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="topbar-right">
+                <div class="user-profile">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Admin">
+                    <div class="user-info">
+                        <span class="user-name">Admin User</span>
+                        <span class="user-role">Administrator</span>
+                    </div>
+                </div>
+            </div>
         </header>
         
         <!-- Content -->
         <div class="content">
             <div class="page-header">
-                <h1 class="page-title">Customers</h1>
-                <ul class="breadcrumb">
-                    <li><a href="dashboard.html">Home</a></li>
-                    <li>Customers</li>
-                </ul>
+                <div class="page-title">
+                    <h1>Customers</h1>
+                    <div class="breadcrumb">
+                        <a href="dashboard.html">Home</a>
+                        <span class="divider">/</span>
+                        <a href="customers.html">Customers</a>
+                    </div>
+                </div>
+                <div>
+                    <button class="btn btn-primary" id="refresh-customers">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
             </div>
             
             <div class="card-grid">
@@ -93,10 +589,11 @@
                                     <th>Name</th>
                                     <th>Email</th>
                                     <th>Orders</th>
+                                    <th>Joined</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="customers-table-body">
                                 <!-- Customers will be loaded dynamically -->
                             </tbody>
                         </table>
@@ -105,5 +602,274 @@
             </div>
         </div>
     </main>
+
+    <!-- View Customer Modal -->
+    <div class="modal" id="view-customer-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Customer Details</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body" id="customer-details">
+                <!-- Customer details will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline close-modal">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal" id="delete-customer-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Confirm Delete</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this customer? This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline close-modal">Cancel</button>
+                <button class="btn btn-danger" id="confirm-delete">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBgTfR8LW6XvZ7QsqoDskwd0LDKzwkDE3c",
+            authDomain: "bkeditor-696ed.firebaseapp.com",
+            databaseURL: "https://bkeditor-696ed-default-rtdb.firebaseio.com",
+            projectId: "bkeditor-696ed",
+            storageBucket: "bkeditor-696ed.appspot.com",
+            messagingSenderId: "101064331771",
+            appId: "1:101064331771:web:69016baa8c04651937bb5e"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        // DOM Elements
+        const toggleSidebar = document.getElementById('toggle-sidebar');
+        const sidebar = document.querySelector('.sidebar');
+        const customersTableBody = document.getElementById('customers-table-body');
+        const totalCustomersEl = document.getElementById('total-customers');
+        const newCustomersEl = document.getElementById('new-customers');
+        const activeCustomersEl = document.getElementById('active-customers');
+        const refreshBtn = document.getElementById('refresh-customers');
+        const viewCustomerModal = document.getElementById('view-customer-modal');
+        const deleteCustomerModal = document.getElementById('delete-customer-modal');
+        const customerDetailsEl = document.getElementById('customer-details');
+        const confirmDeleteBtn = document.getElementById('confirm-delete');
+        const closeModalBtns = document.querySelectorAll('.close-modal');
+
+        // Global variables
+        let customers = [];
+        let customerToDelete = null;
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCustomers();
+            setupEventListeners();
+        });
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Toggle sidebar
+            toggleSidebar.addEventListener('click', () => {
+                sidebar.classList.toggle('active');
+            });
+
+            // Refresh customers
+            refreshBtn.addEventListener('click', loadCustomers);
+
+            // Close modals
+            closeModalBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    viewCustomerModal.style.display = 'none';
+                    deleteCustomerModal.style.display = 'none';
+                });
+            });
+
+            // Confirm delete
+            confirmDeleteBtn.addEventListener('click', deleteCustomer);
+        }
+
+        // Load customers from Firestore
+        function loadCustomers() {
+            // Show loading state
+            customersTableBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">Loading customers...</td></tr>';
+
+            // Get all customers
+            db.collection('users').where('role', '==', 'customer').get()
+                .then(querySnapshot => {
+                    customers = [];
+                    let totalCustomers = 0;
+                    let newCustomers = 0;
+                    let activeCustomers = 0;
+
+                    const thirtyDaysAgo = new Date();
+                    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+                    querySnapshot.forEach(doc => {
+                        const customer = {
+                            id: doc.id,
+                            ...doc.data()
+                        };
+                        customers.push(customer);
+
+                        // Count total customers
+                        totalCustomers++;
+
+                        // Count new customers (joined in last 30 days)
+                        if (customer.createdAt && customer.createdAt.toDate() > thirtyDaysAgo) {
+                            newCustomers++;
+                        }
+
+                        // Count active customers (have orders in last 30 days)
+                        // In a real app, you would check their order history
+                        // For demo, we'll assume 20% are active
+                        if (Math.random() < 0.2) {
+                            activeCustomers++;
+                        }
+                    });
+
+                    // Update stats
+                    totalCustomersEl.textContent = totalCustomers;
+                    newCustomersEl.textContent = newCustomers;
+                    activeCustomersEl.textContent = activeCustomers;
+
+                    // Render customers table
+                    renderCustomersTable();
+                })
+                .catch(error => {
+                    console.error("Error loading customers: ", error);
+                    customersTableBody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--danger);">Error loading customers. Please try again.</td></tr>';
+                });
+        }
+
+        // Render customers table
+        function renderCustomersTable() {
+            if (customers.length === 0) {
+                customersTableBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No customers found</td></tr>';
+                return;
+            }
+
+            customersTableBody.innerHTML = '';
+
+            customers.forEach(customer => {
+                const row = document.createElement('tr');
+                
+                // Format joined date
+                let joinedDate = 'N/A';
+                if (customer.createdAt) {
+                    joinedDate = customer.createdAt.toDate().toLocaleDateString();
+                }
+
+                // Random order count for demo (0-20)
+                const orderCount = Math.floor(Math.random() * 21);
+
+                row.innerHTML = `
+                    <td>${customer.id.substring(0, 8)}...</td>
+                    <td>${customer.name || 'N/A'}</td>
+                    <td>${customer.email}</td>
+                    <td>${orderCount}</td>
+                    <td>${joinedDate}</td>
+                    <td>
+                        <button class="action-btn view" data-id="${customer.id}">
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                        <button class="action-btn delete" data-id="${customer.id}">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </td>
+                `;
+
+                customersTableBody.appendChild(row);
+            });
+
+            // Add event listeners to action buttons
+            document.querySelectorAll('.action-btn.view').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const customerId = e.currentTarget.getAttribute('data-id');
+                    showCustomerDetails(customerId);
+                });
+            });
+
+            document.querySelectorAll('.action-btn.delete').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const customerId = e.currentTarget.getAttribute('data-id');
+                    confirmDelete(customerId);
+                });
+            });
+        }
+
+        // Show customer details in modal
+        function showCustomerDetails(customerId) {
+            const customer = customers.find(c => c.id === customerId);
+            if (!customer) return;
+
+            // Format customer data for display
+            const formattedCustomer = {
+                'Name': customer.name || 'N/A',
+                'Email': customer.email,
+                'User ID': customer.id,
+                'Joined Date': customer.createdAt ? customer.createdAt.toDate().toLocaleString() : 'N/A',
+                'Phone': customer.phone || 'N/A',
+                'Address': customer.address || 'N/A',
+                'Total Orders': Math.floor(Math.random() * 21), // Demo data
+                'Total Spent': `$${(Math.random() * 1000).toFixed(2)}`, // Demo data
+                'Last Order': '2 days ago' // Demo data
+            };
+
+            // Create HTML for customer details
+            let detailsHTML = '';
+            for (const [key, value] of Object.entries(formattedCustomer)) {
+                detailsHTML += `
+                    <div class="detail-row">
+                        <strong>${key}:</strong> ${value}
+                    </div>
+                `;
+            }
+
+            customerDetailsEl.innerHTML = detailsHTML;
+            viewCustomerModal.style.display = 'flex';
+        }
+
+        // Confirm customer deletion
+        function confirmDelete(customerId) {
+            customerToDelete = customerId;
+            deleteCustomerModal.style.display = 'flex';
+        }
+
+        // Delete customer
+        function deleteCustomer() {
+            if (!customerToDelete) return;
+
+            // In a real app, you might want to:
+            // 1. Check if customer has orders before deleting
+            // 2. Anonymize their data instead of deleting
+            // 3. Archive their record
+
+            db.collection('users').doc(customerToDelete).delete()
+                .then(() => {
+                    alert('Customer deleted successfully');
+                    deleteCustomerModal.style.display = 'none';
+                    loadCustomers(); // Refresh the list
+                })
+                .catch(error => {
+                    console.error("Error deleting customer: ", error);
+                    alert('Failed to delete customer. Please try again.');
+                });
+        }
+    </script>
 </body>
 </html>
