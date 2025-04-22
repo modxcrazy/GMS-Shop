@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders - Tech Haven Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../../css/fonts.css">
+    <link rel="stylesheet" href="../../css/admin.css">
+    <script type="module" src="../../js/admin.js"></script>
+</head>
+<body class="admin-dashboard">
+    <!-- Sidebar (same as products.html) -->
+    <aside class="sidebar">
+        <!-- ... same sidebar content as products.html ... -->
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header (same as products.html) -->
+        <header class="header">
+            <!-- ... same header content as products.html ... -->
+        </header>
+        
+        <!-- Content -->
+        <div class="content">
+            <div class="page-header">
+                <h1 class="page-title">Orders</h1>
+                <ul class="breadcrumb">
+                    <li><a href="dashboard.html">Home</a></li>
+                    <li>Orders</li>
+                </ul>
+            </div>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Total Orders</h3>
+                        <div class="card-icon primary">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h3 id="total-orders">0</h3>
+                        <div class="card-footer">
+                            <i class="fas fa-calendar"></i> Last 30 days
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Pending Orders</h3>
+                        <div class="card-icon warning">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h3 id="pending-orders">0</h3>
+                        <div class="card-footer">
+                            <i class="fas fa-calendar"></i> Last 30 days
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Completed Orders</h3>
+                        <div class="card-icon success">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h3 id="completed-orders">0</h3>
+                        <div class="card-footer">
+                            <i class="fas fa-calendar"></i> Last 30 days
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Total Revenue</h3>
+                        <div class="card-icon danger">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h3 id="total-revenue">$0.00</h3>
+                        <div class="card-footer">
+                            <i class="fas fa-calendar"></i> Last 30 days
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Recent Orders</h3>
+                </div>
+                
+                <div class="card-body">
+                    <div class="table-container">
+                        <table class="table orders-table">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Date</th>
+                                    <th>Customer</th>
+                                    <th>Items</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Orders will be loaded dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
