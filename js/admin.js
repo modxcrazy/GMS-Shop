@@ -38,7 +38,7 @@ loginForm?.addEventListener('submit', async (e) => {
 // Check auth state on dashboard pages
 auth.onAuthStateChanged(async (user) => {
     // If on login page and already logged in, redirect to dashboard
-    if (window.location.pathname.includes('index.html') && user) {
+    if (window.location.pathname.includes('admin.html') && user) {
         const userDoc = await db.collection('admins').doc(user.uid).get();
         if (userDoc.exists) {
             window.location.href = 'dashboard/products.html';
@@ -49,7 +49,7 @@ auth.onAuthStateChanged(async (user) => {
     
     // If on dashboard page and not logged in, redirect to login
     if (window.location.pathname.includes('dashboard/') && !user) {
-        window.location.href = '../index.html';
+        window.location.href = '../admin.html';
     }
 });
 
@@ -69,7 +69,7 @@ if (window.location.pathname.includes('dashboard/')) {
     logoutBtn?.addEventListener('click', async () => {
         try {
             await auth.signOut();
-            window.location.href = '../index.html';
+            window.location.href = '../admin.html';
         } catch (error) {
             console.error('Logout error:', error);
         }
