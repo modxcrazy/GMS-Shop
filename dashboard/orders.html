@@ -668,7 +668,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <h3 id="total-revenue">$0.00</h3>
+                        <h3 id="total-revenue">₹0.00</h3>
                         <div class="card-footer">
                             <i class="fas fa-calendar"></i> Last 30 days
                         </div>
@@ -755,19 +755,19 @@
                                 <tfoot>
                                     <tr>
                                         <td colspan="3">Subtotal</td>
-                                        <td id="order-subtotal">$0.00</td>
+                                        <td id="order-subtotal">₹0.00</td>
                                     </tr>
                                     <tr>
                                         <td colspan="3">Shipping</td>
-                                        <td id="order-shipping">$0.00</td>
+                                        <td id="order-shipping">₹0.00</td>
                                     </tr>
                                     <tr>
                                         <td colspan="3">Tax</td>
-                                        <td id="order-tax">$0.00</td>
+                                        <td id="order-tax">₹0.00</td>
                                     </tr>
                                     <tr>
                                         <td colspan="3"><strong>Total</strong></td>
-                                        <td id="order-total"><strong>$0.00</strong></td>
+                                        <td id="order-total"><strong>₹0.00</strong></td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -1053,8 +1053,8 @@
             // Set order totals
             orderSubtotalEl.textContent = `₹${order.subtotal?.toFixed(2) || '0.00'}`;
             orderShippingEl.textContent = `₹${order.shippingCost?.toFixed(2) || '0.00'}`;
-            orderTaxEl.textContent = `$${order.tax?.toFixed(2) || '0.00'}`;
-            orderTotalEl.innerHTML = `<strong>$${order.total?.toFixed(2) || '0.00'}</strong>`;
+            orderTaxEl.textContent = `₹${order.tax?.toFixed(2) || '0.00'}`;
+            orderTotalEl.innerHTML = `<strong>₹${order.total?.toFixed(2) || '0.00'}</strong>`;
 
             // Set current status in select
             orderStatusSelect.value = order.status || 'pending';
