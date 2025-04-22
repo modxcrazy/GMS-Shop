@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart - Tech Haven</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script type="module" src="js/cart.js"></script>
+</head>
+<body>
+    <!-- Header (same as index.html) -->
+    <header>
+        <div class="logo">
+            <h1>Tech Haven</h1>
+            <p>Your Ultimate Electronics Destination</p>
+        </div>
+        
+        <div class="search-bar">
+            <input type="text" placeholder="Search for products..." id="search-input">
+            <button id="search-btn"><i class="fas fa-search"></i></button>
+        </div>
+        
+        <div class="user-actions">
+            <a href="#" id="login-btn"><i class="fas fa-user"></i> Login</a>
+            <a href="#" id="wishlist-btn"><i class="fas fa-heart"></i> Wishlist</a>
+            <a href="cart.html" id="cart-btn"><i class="fas fa-shopping-cart"></i> Cart <span id="cart-count">0</span></a>
+        </div>
+    </header>
+
+    <!-- Navigation (same as index.html) -->
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#" data-category="smartphones">Smartphones</a></li>
+            <li><a href="#" data-category="laptops">Laptops</a></li>
+            <li><a href="#" data-category="tablets">Tablets</a></li>
+            <li><a href="#" data-category="accessories">Accessories</a></li>
+            <li><a href="#" data-category="tvs">TVs</a></li>
+            <li><a href="#" data-category="audio">Audio</a></li>
+            <li><a href="#" id="deals-link">Deals</a></li>
+        </ul>
+    </nav>
+
+    <!-- Cart Section -->
+    <main class="cart-container">
+        <h1>Your Shopping Cart</h1>
+        
+        <div class="cart-layout">
+            <section class="cart-items">
+                <div id="cart-items-container">
+                    <!-- Cart items loaded dynamically -->
+                </div>
+                
+                <div class="cart-empty" id="cart-empty">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h2>Your cart is empty</h2>
+                    <p>Browse our products and add items to your cart</p>
+                    <a href="index.html" class="continue-shopping">Continue Shopping</a>
+                </div>
+            </section>
+            
+            <aside class="cart-summary">
+                <h2>Order Summary</h2>
+                <div class="summary-details">
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span id="subtotal">$0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Shipping</span>
+                        <span id="shipping">$5.99</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Tax</span>
+                        <span id="tax">$0.00</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total</span>
+                        <span id="total">$0.00</span>
+                    </div>
+                </div>
+                <button id="checkout-btn" class="checkout-btn">Proceed to Checkout</button>
+            </aside>
+        </div>
+    </main>
+
+    <!-- Footer (same as index.html) -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-section">
+                <h4>About Tech Haven</h4>
+                <p>Your one-stop shop for all electronics and mobile devices at competitive prices.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#">Products</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Customer Service</h4>
+                <ul>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Shipping Policy</a></li>
+                    <li><a href="#">Return Policy</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact Us</h4>
+                <p><i class="fas fa-map-marker-alt"></i> 123 Tech Street, Silicon Valley</p>
+                <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                <p><i class="fas fa-envelope"></i> info@techhaven.com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 Tech Haven. All Rights Reserved.</p>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal (same as index.html) -->
+    <div class="modal" id="login-modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Login</h2>
+            <form id="login-form">
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+            <p>Don't have an account? <a href="#" id="show-register">Register</a></p>
+        </div>
+    </div>
+
+    <!-- Register Modal (same as index.html) -->
+    <div class="modal" id="register-modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Register</h2>
+            <form id="register-form">
+                <input type="text" placeholder="Full Name" required>
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Password" required>
+                <input type="password" placeholder="Confirm Password" required>
+                <button type="submit">Register</button>
+            </form>
+            <p>Already have an account? <a href="#" id="show-login">Login</a></p>
+        </div>
+    </div>
+</body>
+</html>
