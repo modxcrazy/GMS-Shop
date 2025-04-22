@@ -1,11 +1,12 @@
 // Initialize Firebase with your config
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyBgTfR8LW6XvZ7QsqoDskwd0LDKzwkDE3c",
+  authDomain: "bkeditor-696ed.firebaseapp.com",
+  databaseURL: "https://bkeditor-696ed-default-rtdb.firebaseio.com",
+  projectId: "bkeditor-696ed",
+  storageBucket: "bkeditor-696ed.appspot.com",
+  messagingSenderId: "101064331771",
+  appId: "1:101064331771:web:69016baa8c04651937bb5e",
 };
 
 // Initialize Firebase
