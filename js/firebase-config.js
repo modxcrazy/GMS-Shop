@@ -1,4 +1,4 @@
-// Your web app's Firebase configuration
+// Initialize Firebase with your config
 const firebaseConfig = {
   apiKey: "YOUR_API_KEY",
   authDomain: "YOUR_AUTH_DOMAIN",
@@ -11,7 +11,10 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-// Initialize Firebase services
+// Initialize services
 const db = firebase.firestore();
 const auth = firebase.auth();
 const storage = firebase.storage();
+
+// Export services
+export { db, auth, storage };
