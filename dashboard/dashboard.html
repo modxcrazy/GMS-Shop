@@ -866,31 +866,273 @@
         </div>
     </div>
 
-    <script>
-        // Toggle Sidebar
-        document.getElementById('toggle-sidebar').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.toggle('active');
-            document.querySelector('.main-content').classList.toggle('active');
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+<script>
+    // Firebase Configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyBgTfR8LW6XvZ7QsqoDskwd0LDKzwkDE3c",
+    authDomain: "bkeditor-696ed.firebaseapp.com",
+    databaseURL: "https://bkeditor-696ed-default-rtdb.firebaseio.com",
+    projectId: "bkeditor-696ed",
+    storageBucket: "bkeditor-696ed.appspot.com",
+    messagingSenderId: "101064331771",
+    appId: "1:101064331771:web:69016baa8c04651937bb5e"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+
+    // DOM Elements
+    const toggleSidebar = document.getElementById('toggle-sidebar');
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.querySelector('.main-content');
+    const userProfile = document.querySelector('.user-profile');
+    const userName = document.querySelector('.user-name');
+    const userRole = document.querySelector('.user-role');
+    const userImage = document.querySelector('.user-profile img');
+
+    // Stats Elements
+    const totalProductsElement = document.querySelector('.stat-card:nth-child(1) h3');
+    const todaysOrdersElement = document.querySelector('.stat-card:nth-child(2) h3');
+    const todaysRevenueElement = document.querySelector('.stat-card:nth-child(3) h3');
+    const totalCustomersElement = document.querySelector('.stat-card:nth-child(4) h3');
+
+    // Recent Orders Table Body
+    const ordersTableBody = document.querySelector('.table tbody');
+    
+    // Recent Activity List
+    const activityList = document.querySelector('.activity-list');
+
+    // Initialize the dashboard
+    document.addEventListener('DOMContentLoaded', function() {
+        // Toggle sidebar
+        toggleSidebar.addEventListener('click', function() {
+            sidebar.classList.toggle('active');
+            mainContent.classList.toggle('active');
         });
 
-        // Simulate loading data
-        document.addEventListener('DOMContentLoaded', function() {
-            // In a real app, you would fetch data from Firebase here
-            console.log('Admin dashboard loaded');
-            
-            // Example of initializing a chart (you would use a real chart library like Chart.js)
-            // initializeSalesChart();
-        });
-
-        // Logout functionality (would connect to Firebase Auth in real app)
-        document.querySelector('.user-profile').addEventListener('click', function() {
-            // Show logout confirmation or user menu
-            if(confirm('Are you sure you want to logout?')) {
-                // In real app: firebase.auth().signOut();
-                console.log('User logged out');
-                window.location.href = 'login.html';
+        // Check auth state
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                // User is signed in
+                loadAdminData(user);
+                loadDashboardData();
+                loadRecentOrders();
+                loadRecentActivity();
+            } else {
+                // No user is signed in
+                window.location.href = 'admin.html';
             }
         });
-    </script>
+
+        // Logout functionality
+        userProfile.addEventListener('click', function() {
+            if(confirm('Are you sure you want to logout?')) {
+                auth.signOut().then(() => {
+                    window.location.href = 'admin.html';
+                }).catch(error => {
+                    console.error('Logout error:', error);
+                    alert('Logout failed. Please try again.');
+                });
+            }
+        });
+    });
+
+    // Load admin profile data
+    function loadAdminData(user) {
+        // Display basic user info
+        userName.textContent = user.displayName || 'Admin User';
+        userImage.src = user.photoURL || 'https://randomuser.me/api/portraits/men/32.jpg';
+        
+        // Fetch additional admin data from Firestore
+        db.collection('admins').doc(user.uid).get().then(doc => {
+            if (doc.exists) {
+                const adminData = doc.data();
+                userRole.textContent = adminData.role || 'Administrator';
+                
+                // Update profile picture if available in Firestore
+                if (adminData.profileImage) {
+                    userImage.src = adminData.profileImage;
+                }
+            }
+        }).catch(error => {
+            console.error('Error loading admin data:', error);
+        });
+    }
+
+    // Load dashboard statistics
+    function loadDashboardData() {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        // Total Products
+        db.collection('products').get().then(snapshot => {
+            totalProductsElement.textContent = snapshot.size.toLocaleString();
+        });
+        
+        // Today's Orders
+        db.collection('orders')
+            .where('orderDate', '>=', today)
+            .get().then(snapshot => {
+                todaysOrdersElement.textContent = snapshot.size.toLocaleString();
+                
+                // Calculate Today's Revenue
+                let revenue = 0;
+                snapshot.forEach(doc => {
+                    const order = doc.data();
+                    revenue += order.totalAmount || 0;
+                });
+                todaysRevenueElement.textContent = '₹' + revenue.toLocaleString();
+            });
+        
+        // Total Customers
+        db.collection('customers').get().then(snapshot => {
+            totalCustomersElement.textContent = snapshot.size.toLocaleString();
+        });
+    }
+
+    // Load recent orders
+    function loadRecentOrders() {
+        db.collection('orders')
+            .orderBy('orderDate', 'desc')
+            .limit(5)
+            .get()
+            .then(snapshot => {
+                ordersTableBody.innerHTML = '';
+                
+                snapshot.forEach(doc => {
+                    const order = doc.data();
+                    const orderDate = order.orderDate.toDate();
+                    const formattedDate = orderDate.toLocaleDateString('en-US', {
+                        day: 'numeric',
+                        month: 'short',
+                        year: 'numeric'
+                    });
+                    
+                    // Determine status badge class
+                    let statusClass = 'primary';
+                    if (order.status === 'Completed') statusClass = 'success';
+                    if (order.status === 'Processing') statusClass = 'warning';
+                    if (order.status === 'Cancelled') statusClass = 'danger';
+                    
+                    ordersTableBody.innerHTML += `
+                        <tr>
+                            <td>#${order.orderId}</td>
+                            <td>${order.customerName}</td>
+                            <td>${formattedDate}</td>
+                            <td>₹${order.totalAmount.toLocaleString()}</td>
+                            <td><span class="status-badge ${statusClass}">${order.status}</span></td>
+                            <td>
+                                <button class="action-btn view" data-id="${doc.id}"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn edit" data-id="${doc.id}"><i class="fas fa-edit"></i></button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                // Add event listeners to action buttons
+                document.querySelectorAll('.action-btn.view').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const orderId = this.getAttribute('data-id');
+                        viewOrderDetails(orderId);
+                    });
+                });
+                
+                document.querySelectorAll('.action-btn.edit').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const orderId = this.getAttribute('data-id');
+                        editOrder(orderId);
+                    });
+                });
+            })
+            .catch(error => {
+                console.error('Error loading orders:', error);
+                ordersTableBody.innerHTML = '<tr><td colspan="6">Error loading orders. Please try again.</td></tr>';
+            });
+    }
+
+    // Load recent activity
+    function loadRecentActivity() {
+        db.collection('activities')
+            .orderBy('timestamp', 'desc')
+            .limit(5)
+            .get()
+            .then(snapshot => {
+                activityList.innerHTML = '';
+                
+                snapshot.forEach(doc => {
+                    const activity = doc.data();
+                    const activityTime = activity.timestamp.toDate();
+                    const formattedTime = formatActivityTime(activityTime);
+                    
+                    // Determine icon based on activity type
+                    let activityIcon = 'fa-bell';
+                    if (activity.type === 'order') activityIcon = 'fa-shopping-bag';
+                    if (activity.type === 'customer') activityIcon = 'fa-user';
+                    if (activity.type === 'review') activityIcon = 'fa-comment';
+                    if (activity.type === 'shipment') activityIcon = 'fa-truck';
+                    if (activity.type === 'system') activityIcon = 'fa-sync-alt';
+                    
+                    activityList.innerHTML += `
+                        <li class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas ${activityIcon}"></i>
+                            </div>
+                            <div class="activity-content">
+                                <p>${activity.message}</p>
+                                <span class="activity-time">${formattedTime}</span>
+                            </div>
+                        </li>
+                    `;
+                });
+            })
+            .catch(error => {
+                console.error('Error loading activities:', error);
+                activityList.innerHTML = '<li class="activity-item">Error loading activities</li>';
+            });
+    }
+
+    // Helper function to format activity time
+    function formatActivityTime(date) {
+        const now = new Date();
+        const diffInSeconds = Math.floor((now - date) / 1000);
+        
+        if (diffInSeconds < 60) {
+            return `${diffInSeconds} seconds ago`;
+        }
+        
+        const diffInMinutes = Math.floor(diffInSeconds / 60);
+        if (diffInMinutes < 60) {
+            return `${diffInMinutes} mins ago`;
+        }
+        
+        const diffInHours = Math.floor(diffInMinutes / 60);
+        if (diffInHours < 24) {
+            return `${diffInHours} hours ago`;
+        }
+        
+        const diffInDays = Math.floor(diffInHours / 24);
+        return `${diffInDays} days ago`;
+    }
+
+    // View order details
+    function viewOrderDetails(orderId) {
+        // In a real implementation, you would show a modal with order details
+        console.log('View order:', orderId);
+        // window.location.href = `order-details.html?id=${orderId}`;
+    }
+
+    // Edit order
+    function editOrder(orderId) {
+        // In a real implementation, you would show an edit form
+        console.log('Edit order:', orderId);
+        // window.location.href = `edit-order.html?id=${orderId}`;
+    }
+</script>
 </body>
 </html>
